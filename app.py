@@ -52,7 +52,7 @@ st.session_state["teams"] = update_team_members(st.session_state["staffs"], st.s
 
 # Streamlit UI
 st.set_page_config(page_title="Holiday Manager", layout="wide")
-st.sidebar.image("logo.png", use_column_width=True)
+st.sidebar.image("logo.png", use_container_width=True)
 menu = st.sidebar.radio("Navigation", ["Home", "Staffs", "Teams", "Weekend Schedule", "Users", "My Account"])
 
 if menu == "Home":
