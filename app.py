@@ -172,10 +172,14 @@ elif menu == "Weekend Schedule":
                 team_data = st.session_state["teams"][st.session_state["teams"]["Team Name"] == team].iloc[0]
                 team_members = team_data["Members"].split(",")
                 weekend_dates = pd.date_range(start=start_date, end=end_date, freq="W-SAT").to_list()
-                assignments = [
-                    {"Team Member": team_members[i % len(team_members)], "Weekend Date": date.strftime("%Y-%m-%d")}
-                    for i, date in enumerate(weekend_dates)
-                ]
+                assignments = []
+
+                for i, saturday in enumerate(weekend_dates):
+                    sunday = saturday + pd.Timedelta(days=1)  # Calculate Sunday
+                    staff_member = team_members[i % len(team_members)]  # Assign staff member in a round-robin way
+                    assignments.append({"Team Member": staff_member, "Weekend Date": saturday.strftime("%Y-%m-%d"), "Day": "Saturday"})
+                    assignments.append({"Team Member": staff_member, "Weekend Date": sunday.strftime("%Y-%m-%d"), "Day": "Sunday"})
+
                 new_schedule = {
                     "ID": len(st.session_state["schedules"]) + 1,
                     "Name": schedule_name,
@@ -189,3 +193,4 @@ elif menu == "Weekend Schedule":
                 save_data(st.session_state["schedules"], SCHEDULES_FILE)
                 st.success(f"Schedule '{schedule_name}' created successfully!")
                 st.experimental_rerun()
+
