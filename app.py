@@ -91,6 +91,11 @@ if menu == "Home":
 
 elif menu == "Staffs":
     st.title("Manage Staffs")
+
+    # Ensure the Phone column is treated as text
+    if "Phone" in st.session_state["staffs"].columns:
+        st.session_state["staffs"]["Phone"] = st.session_state["staffs"]["Phone"].astype(str)
+
     st.write(st.session_state["staffs"])
 
     with st.form("add_staff"):
